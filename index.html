@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>他想说>他>ta>tt
+    <title>他想说</title>
     <style>
         /* 页面样式保持水墨风格 */
         body { margin: 0; height: 100vh; display: flex; justify-content: center; align-items: center; background: #f8f6f2; font-family: "Noto Serif SC", "楷体", serif; color: #2c3e50; }
@@ -32,37 +32,37 @@
         const dateString = today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0') + '-' + String(today.getDate()).padStart(2, '0');
         document.getElementById('date-display').innerText = dateString;
 
-        // 2. 你的数据文件地址 (记得替换为你的正确用户名)
-        const myDataUrl = 'https://raw.githubusercontent.com/lxdislikeyou/my-poem/refs/heads/main/data.json';
+        // 2. 修正后的数据链接 (去掉了 refs/heads/)
+        const myDataUrl = 'https://raw.githubusercontent.com/lxdislikeyou/my-poem/main/data.json';
 
-        // 3. 核心逻辑：先看 data.json，如果没有今天的更新，就用自动循环
+        // 3. 核心逻辑
         fetch(myDataUrl)
             .then(res => res.json())
             .then(data => {
                 // 检查 data.json 里的日期是否是今天
                 if (data.date === dateString) {
-                    // 如果是你今天写的，优先显示你的内容
                     render(data.content, data.translation || "", data.author || "Me");
                 } else {
-                    // 如果日期不是今天，显示自动名言
                     showDailyQuote();
                 }
             })
             .catch(err => {
-                // 如果读取出错（比如文件格式不对），也显示自动名言作为保底
                 console.log("加载个人数据失败，切换到自动模式");
                 showDailyQuote();
             });
 
         function showDailyQuote() {
-            // 计算今天是今年的第几天
+            // 防止 quotes.js 没加载成功报错
+            if (typeof quoteList === 'undefined') {
+                document.getElementById('sentence').innerText = "暂无内容";
+                return;
+            }
+
             const start = new Date(today.getFullYear(), 0, 0);
             const diff = today - start;
             const oneDay = 1000 * 60 * 60 * 24;
             const dayOfYear = Math.floor(diff / oneDay);
 
-            // 用“第几天”对“名言总数”取余数，实现无限循环
-            // 哪怕只有30句，第31天会自动回到第1句
             const index = dayOfYear % quoteList.length; 
             const quote = quoteList[index];
 
