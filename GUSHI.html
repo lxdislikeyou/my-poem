@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>每日古诗 - 遇见诗意</title>
+    <style>
+        /* 页面整体样式 */
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #f8f6f2; /* 宣纸色 */
+            font-family: "Noto Serif SC", "Source Han Serif SC", "Hiragino Mincho ProN", "楷体", serif;
+            color: #2c3e50;
+        }
+
+        /* 装饰背景：淡淡的水墨感 */
+        body::before {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(0,0,0,0.03) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        /* 诗词卡片 */
+        .container {
+            max-width: 80%;
+            text-align: center;
+            padding: 50px;
+            border: 1px solid rgba(0,0,0,0.1);
+            position: relative;
+            background: rgba(255, 255, 255, 0.5);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        /* 装饰边角 */
+        .container::after {
+            content: "詩";
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            font-size: 12px;
+            color: #ccc;
+            border: 1px solid #eee;
+            padding: 2px 5px;
+        }
+
+        #sentence {
+            font-size: 2.2rem;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            letter-spacing: 2px;
+            font-weight: 500;
+        }
+
+        #author-info {
+            font-size: 1.1rem;
+            color: #7f8c8d;
+            border-top: 1px solid #eee;
+            display: inline-block;
+            padding-top: 15px;
+        }
+
+        /* 刷新按钮 */
+        .refresh-btn {
+            margin-top: 40px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            color: #bdc3c7;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        .refresh-btn:hover { color: #2c3e50; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div id="sentence">正在为你寻章摘句...</div>
+        <div id="author-info">
+            <span id="origin"></span> · <span id="author"></span>
+        </div>
+        <div class="refresh-btn" onclick="location.reload()">再来一句</div>
+    </div>
+
+    <script src="https://sdk.jinrishici.com/v2/browser/jinrishici.js" charset="utf-8"></script>
+    <script type="text/javascript">
+        jinrishici.load(function(result) {
+            // 将获取的数据注入到 HTML 中
+            document.getElementById("sentence").innerHTML = result.data.content;
+            document.getElementById("author").innerHTML = result.data.origin.author;
+            document.getElementById("origin").innerHTML = result.data.origin.title;
+        });
+    </script>
+</body>
+</html>
