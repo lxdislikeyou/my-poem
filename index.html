@@ -32,7 +32,7 @@
         const dateString = today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0') + '-' + String(today.getDate()).padStart(2, '0');
         document.getElementById('date-display').innerText = dateString;
 
-        // 2. 修正后的数据链接 (去掉了 refs/heads/)
+        // 🟢 修复点：去掉了链接里多余的 "refs/heads/"
         const myDataUrl = 'https://raw.githubusercontent.com/lxdislikeyou/my-poem/main/data.json';
 
         // 3. 核心逻辑
@@ -54,7 +54,7 @@
         function showDailyQuote() {
             // 防止 quotes.js 没加载成功报错
             if (typeof quoteList === 'undefined') {
-                document.getElementById('sentence').innerText = "暂无内容";
+                document.getElementById('sentence').innerText = "暂无内容 (请检查 quotes.js 是否上传)";
                 return;
             }
 
