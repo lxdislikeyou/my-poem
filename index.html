@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>作者的话</title>
+    <style>
+        body { margin: 0; height: 100vh; display: flex; justify-content: center; align-items: center; background: #fafafa; font-family: "楷体", serif; }
+        .card { width: 80%; max-width: 500px; padding: 40px; background: white; border: 1px solid #ddd; box-shadow: 10px 10px 0px #eee; }
+        #text { font-size: 24px; color: #222; line-height: 1.8; margin-bottom: 20px; }
+        #meta { text-align: right; color: #888; font-size: 14px; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div id="text">正在读取作者的消息...</div>
+        <div id="meta">—— <span id="author"></span> <br> <span id="note"></span></div>
+    </div>
+
+    <script>
+        // 将这里的 URL 替换为你 GitHub 仓库中 data.json 的“Raw”链接
+        const dataUrl = 'https://raw.githubusercontent.com/lxdislikeyou/my-poem/refs/heads/main/data.json';
+
+        fetch(dataUrl)
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById('text').innerText = data.content;
+                document.getElementById('author').innerText = data.author;
+                document.getElementById('note').innerText = data.note;
+            })
+            .catch(err => {
+                document.getElementById('text').innerText = "暂无更新";
+            });
+    </script>
+</body>
+</html>
