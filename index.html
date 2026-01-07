@@ -5,14 +5,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>他想说</title>
     <style>
-        /* 页面样式保持水墨风格 */
-        body { margin: 0; height: 100vh; display: flex; justify-content: center; align-items: center; background: #f8f6f2; font-family: "Noto Serif SC", "楷体", serif; color: #2c3e50; }
-        body::before { content: ""; position: absolute; width: 100%; height: 100%; background: radial-gradient(circle, rgba(0,0,0,0.02) 0%, transparent 70%); pointer-events: none; }
-        .container { width: 85%; max-width: 600px; text-align: center; padding: 40px; background: rgba(255, 255, 255, 0.6); box-shadow: 0 4px 20px rgba(0,0,0,0.05); border-radius: 8px; position: relative; }
+        /* 🟢 核心修改：背景图设置 */
+        body { 
+            margin: 0; 
+            height: 100vh; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            font-family: "Noto Serif SC", "楷体", serif; 
+            color: #2c3e50;
+
+            /* 这里换成了你提供的图片链接 */
+            /* "下载.png" 建议以后尽量用英文命名，比如 bg.png，防止部分浏览器识别不到中文 */
+            background: url('https://lxdislikeyou.github.io/my-poem/bg.png') no-repeat center center fixed;
+            background-size: cover; /* 保证图片填满整个屏幕 */
+        }
+
+        /* 🟢 核心修改：卡片改为半透明毛玻璃，防止背景太花看不清字 */
+        .container { 
+            width: 85%; 
+            max-width: 600px; 
+            text-align: center; 
+            padding: 40px; 
+            /* 白色背景，透明度 0.85 */
+            background: rgba(255, 255, 255, 0.85); 
+            /* 背景模糊特效 (像磨砂玻璃一样) */
+            backdrop-filter: blur(8px); 
+            -webkit-backdrop-filter: blur(8px); /* 兼容苹果手机 */
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2); 
+            border-radius: 12px; 
+            position: relative; 
+        }
+
         #sentence { font-size: 1.8rem; line-height: 1.6; margin-bottom: 20px; font-weight: bold; }
         #translation { font-size: 1.2rem; color: #555; margin-bottom: 30px; font-style: italic; }
-        #author-info { font-size: 0.9rem; color: #888; border-top: 1px solid #ddd; display: inline-block; padding-top: 10px; margin-top: 10px; }
-        .date-badge { position: absolute; top: 10px; left: 10px; font-size: 0.8rem; color: #aaa; border: 1px solid #ddd; padding: 2px 6px; border-radius: 4px; }
+        #author-info { font-size: 0.9rem; color: #666; border-top: 1px solid #aaa; display: inline-block; padding-top: 10px; margin-top: 10px; }
+        .date-badge { position: absolute; top: 10px; left: 10px; font-size: 0.8rem; color: #666; border: 1px solid #999; padding: 2px 6px; border-radius: 4px; }
     </style>
 </head>
 <body>
@@ -32,14 +60,13 @@
         const dateString = today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0') + '-' + String(today.getDate()).padStart(2, '0');
         document.getElementById('date-display').innerText = dateString;
 
-        // 🟢 修复点：去掉了链接里多余的 "refs/heads/"
+        // 2. 数据链接
         const myDataUrl = 'https://raw.githubusercontent.com/lxdislikeyou/my-poem/main/data.json';
 
         // 3. 核心逻辑
         fetch(myDataUrl)
             .then(res => res.json())
             .then(data => {
-                // 检查 data.json 里的日期是否是今天
                 if (data.date === dateString) {
                     render(data.content, data.translation || "", data.author || "Me");
                 } else {
@@ -52,7 +79,6 @@
             });
 
         function showDailyQuote() {
-            // 防止 quotes.js 没加载成功报错
             if (typeof quoteList === 'undefined') {
                 document.getElementById('sentence').innerText = "暂无内容 (请检查 quotes.js 是否上传)";
                 return;
